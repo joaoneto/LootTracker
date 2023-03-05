@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<Plugin>
+	<Information>
+		<Name>LootTracker</Name>
+		<Author>João Neto</Author>
+		<Version>0.1.0</Version>
+		<Description>LootTracker
+More information:
+
+https://github.com/joaoneto/LootTracker
+</Description>
+		<Image>LootTracker/Resources/logo.tga</Image>
+	</Information>
+	<Package>LootTracker.Main</Package>
+	<Configuration Apartment="LootTracker"></Configuration>
+</Plugin>
