@@ -5,9 +5,16 @@
 		<Author>João Neto</Author>
 		<Version>0.1.0</Version>
 		<Description>LootTracker
+
+LootTracker is a fellowship loot track, it shows all itens obtained by loot players.
+
+Commands:
+    /lt - Open LootTracker window
+
 More information:
 
 https://github.com/joaoneto/LootTracker
+
 </Description>
 		<Image>LootTracker/Resources/logo.tga</Image>
 	</Information>

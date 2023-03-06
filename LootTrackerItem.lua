@@ -22,7 +22,7 @@ end
 
 function LootTrackerItem:Constructor(data)
     Turbine.UI.Control.Constructor(self);
-    self:SetSize(600 - 40, 44);
+    self:SetSize(500 - 40, 44);
 
     self.data = data;
     self.timeAgo = Turbine.UI.Label();
@@ -39,19 +39,25 @@ function LootTrackerItem:Constructor(data)
         self.description:SetSize(200, 40);
         self.description:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
         self.description:SetForeColor(GetQualityColor(self.inspect:GetItemInfo():GetQuality()));
+        self.description:SetOutlineColor(Turbine.UI.Color.Black);
         self.description:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
         self.description:SetText(self.inspect:GetItemInfo():GetName());
 
         self.timeAgo:SetParent(self);
         self.timeAgo:SetSize(120, 36);
         self.timeAgo:SetPosition(200 + 40 + 4, 4);
+        self.timeAgo:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
+        self.timeAgo:SetOutlineColor(Turbine.UI.Color.Black);
         self.timeAgo:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
         self.timeAgo:SetText(TimeAgo(data.time));
 
         self.user:SetParent(self);
         self.user:SetSize(120, 36);
         self.user:SetPosition(200 + 40 + 120 + 4 + 4, 4);
+        self.user:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
+        self.user:SetOutlineColor(Turbine.UI.Color.Black);
         self.user:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
+        self.user:SetSelectable(true);
         self.user:SetText(data.user);
     end
 

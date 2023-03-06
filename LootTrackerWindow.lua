@@ -9,20 +9,20 @@ function LootTrackerWindow:Constructor()
 
     self.list = {};
 
-    self:SetSize(600, 420);
+    self:SetSize(500, 420);
     self:SetText("LootTracker");
 
     self.verticalScrollbar = Turbine.UI.Lotro.ScrollBar();
     self.verticalScrollbar:SetOrientation(Turbine.UI.Orientation.Vertical);
     self.verticalScrollbar:SetParent(self);
     self.verticalScrollbar:SetZOrder(1);
-    self.verticalScrollbar:SetPosition(600 - 20, 40);
+    self.verticalScrollbar:SetPosition(500 - 20, 40);
     self.verticalScrollbar:SetSize(10, 420 - 60);
 
     self.list = Turbine.UI.ListBox();
     self.list:SetParent(self);
     self.list:SetPosition(20, 40);
-    self.list:SetSize(600 - 40, 420 - 60);
+    self.list:SetSize(500 - 40, 420 - 60);
     self.list:SetVerticalScrollBar(self.verticalScrollbar);
 
     self:Update();
@@ -34,9 +34,10 @@ function LootTrackerWindow:Update()
 	end
 
     for _, data in pairs(_G.lootTrackerHistory) do
-        Turbine.Shell.WriteLine("> " .. data.user);
         local item = LootTrackerItem(data);
-        item:SetParent(self);
-        self.list:AddItem(item);
+        if (item.inspect:GetItemInfo()) then
+            item:SetParent(self);
+            self.list:AddItem(item);
+        end
     end
 end
