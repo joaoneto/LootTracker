@@ -1,3 +1,4 @@
+import "LootTracker.ItemLinkDecode";
 import "LootTracker.Globals";
 import "LootTracker.Utils";
 import "LootTracker.ItemInspect";

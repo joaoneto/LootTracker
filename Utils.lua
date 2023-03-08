@@ -1,3 +1,18 @@
+function GetHex(IN)
+    local B, K, OUT, I, D = 16, "0123456789ABCDEF", "", 0, 0;
+    if IN == 0 or IN == "0" then return "00" end
+
+    while IN > 0 do
+        I = I + 1
+        IN, D = math.floor(IN / B), math.mod(IN, B) + 1
+        OUT = string.sub(K, D, D) .. OUT
+    end
+
+    if string.len(OUT) == 1 then OUT = "0" .. OUT end
+
+    return OUT
+end
+
 function GetItemFromHex(itemHex)
     if (itemHex == nil) then
         return nil;

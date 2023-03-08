@@ -4,15 +4,24 @@ import "LootTracker";
 local lootWindow = LootTrackerWindow();
 
 function HandleReceivedMessage(sender, args)
-    if (args.ChatType == Turbine.ChatType.FellowLoot and args.Message:match("<Examine:IIDDID:")) then
-        local id = args.Message:gsub("(%w+) has acquired %<Examine:IIDDID:(.*):(.*)%>%[(.*)%](.*)\n", "%3");
-        local user = args.Message:gsub("(%w+) has acquired (.*)%[(.*)%](.*)\n", "%1");
+    if (args.ChatType == Turbine.ChatType.FellowLoot) then
+        local id = nil;
+        local hexId = args.Message:match('<Examine:IIDDID:(.*)>(%b[])<\\Examine>');
+        local infoStr = args.Message:match('<ExamineItemInstance:ItemInfo:(.*)>(%b[])<\\ExamineItemInstance>');
 
+        if (hexId) then
+            id = args.Message:match('<Examine:IIDDID:(.*)>(%b[])<\\Examine>');
+        elseif (infoStr and pcall(ItemLinkDecode.DecodeLinkData, infoStr, false)) then
+            id = GetHex(ItemLinkDecode.DecodeLinkData(infoStr, false).itemGID);
+        end
+
+        local user = args.Message:match('(.*) has acquired');
         table.insert(_G.lootTrackerHistory, 1, {
             id = id,
             user = user,
             time = Turbine.Engine.GetLocalTime(),
         });
+
         lootWindow:Update();
     end
 end
