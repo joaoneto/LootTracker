@@ -37,7 +37,7 @@ function LootTrackerItem:Constructor(data)
         self.description:SetParent(self);
         self.description:SetPosition(42, 4);
         self.description:SetSize(200, 40);
-        self.description:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
+        self.description:SetFont(Turbine.UI.Lotro.Font.TrajanPro15);
         self.description:SetForeColor(GetQualityColor(self.inspect:GetItemInfo():GetQuality()));
         self.description:SetOutlineColor(Turbine.UI.Color.Black);
         self.description:SetTextAlignment(Turbine.UI.ContentAlignment.MiddleLeft);
