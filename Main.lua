@@ -4,25 +4,19 @@ import "LootTracker";
 local lootWindow = LootTrackerWindow();
 
 function HandleReceivedMessage(sender, args)
-    if (args.ChatType == Turbine.ChatType.FellowLoot) then
-        local id = nil;
-        local hexId = args.Message:match('<Examine:IIDDID:(.*)>(%b[])<\\Examine>');
-        local infoStr = args.Message:match('<ExamineItemInstance:ItemInfo:(.*)>(%b[])<\\ExamineItemInstance>');
-
-        if (hexId) then
-            id = args.Message:match('<Examine:IIDDID:(.*)>(%b[])<\\Examine>');
-        elseif (infoStr and pcall(ItemLinkDecode.DecodeLinkData, infoStr, false)) then
-            id = GetHex(ItemLinkDecode.DecodeLinkData(infoStr, false).itemGID);
-        end
-
-        local user = args.Message:match('(.*) has acquired');
-        table.insert(_G.lootTrackerHistory, 1, {
+    local user = args.Message:match('(.*) has acquired');
+    if (args.ChatType == Turbine.ChatType.FellowLoot or user) then
+        local idHex = args.Message:match('has acquired <Examine:IIDDID:.*:(.*)>%b[]<\\Examine>');
+        local infoStr = args.Message:match('has acquired <ExamineItemInstance:ItemInfo:(.*)>%b[]<\\ExamineItemInstance>');
+        local id = (idHex and idHex) or (infoStr and "0x" .. GetHex(ItemLinkDecode.DecodeLinkData(infoStr, false).itemGID));
+        local time = Turbine.Engine.GetLocalTime();
+        local data = {
             id = id,
             user = user,
-            time = Turbine.Engine.GetLocalTime(),
-        });
-
-        lootWindow:Update();
+            time = time,
+        };
+        table.insert(_G.lootTrackerHistory, -1, data);
+        lootWindow:AddItem(data);
     end
 end
 
@@ -41,11 +35,11 @@ Turbine.Shell.AddCommand("lt", OpenLootTrackerWindow);
 Plugins.LootTracker.Load = function ()
     local filteredLootList = Turbine.PluginData.Load(Turbine.DataScope.Account, "LootTracker");
     _G.lootTrackerHistory = FilterLootTrackerListPeriod(filteredLootList, ONE_DAY_IN_SECONDS);
-    table.sort(_G.lootTrackerHistory, function(a, b)
-        return a.time > b.time;
+    table.sort(_G.lootTrackerHistory, function (a, b)
+        return a.time < b.time;
     end);
     lootWindow:SetVisible(true);
-    lootWindow:Update();
+    lootWindow:LoadData(_G.lootTrackerHistory);
 end
 
 Plugins.LootTracker.Unload = function ()

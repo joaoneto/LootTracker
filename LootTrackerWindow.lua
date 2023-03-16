@@ -24,20 +24,20 @@ function LootTrackerWindow:Constructor()
     self.list:SetPosition(20, 40);
     self.list:SetSize(500 - 40, 420 - 60);
     self.list:SetVerticalScrollBar(self.verticalScrollbar);
-
-    self:Update();
 end
 
-function LootTrackerWindow:Update()
+function LootTrackerWindow:AddItem(data)
+    local item = LootTrackerItem(data);
+    item:SetParent(self);
+    self.list:InsertItem(-1, item);
+end
+
+function LootTrackerWindow:LoadData(dataList)
     while self.list:GetItemCount() > 0 do
         self.list:RemoveItemAt(1);
 	end
 
-    for _, data in pairs(_G.lootTrackerHistory) do
-        local item = LootTrackerItem(data);
-        if (item.inspect:GetItemInfo()) then
-            item:SetParent(self);
-            self.list:AddItem(item);
-        end
+    for _, data in pairs(dataList) do
+        self:AddItem(data);
     end
 end
